@@ -9,7 +9,6 @@ use AntQa\Bundle\PayUBundle\Model\Payment as PaymentModel;
  * Class Payment
  *
  * @ORM\Entity()
- * @ORM\Table(name="payment")
  */
 class Payment extends PaymentModel
 {
