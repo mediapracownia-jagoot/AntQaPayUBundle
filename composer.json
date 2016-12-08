@@ -21,7 +21,7 @@
         "symfony/property-access": "~2.3",
         "doctrine/doctrine-bundle": "~1.2",
         "doctrine/orm": "~2.2,>=2.2.3",
-        "openpayu/openpayu": "~2.1.0"
+        "openpayu/openpayu": "2.2.*"
     },
     "require-dev": {
         "symfony/yaml": "~2.3"

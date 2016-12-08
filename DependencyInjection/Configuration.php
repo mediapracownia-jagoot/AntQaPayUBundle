@@ -22,9 +22,6 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('pos_id')->isRequired()->end()
-                ->scalarNode('pos_signature_key')->isRequired()->end()
-                ->scalarNode('pos_env')->isRequired()->end()
                 ->scalarNode('payment_class')->isRequired()->end()
             ->end();
 
