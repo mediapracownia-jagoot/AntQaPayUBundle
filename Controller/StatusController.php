@@ -89,11 +89,8 @@ class StatusController extends Controller
                     }
                 }
 
-                $responseContent = \OpenPayU::buildOrderNotifyResponse($result->order->orderId);
-
                 $response = new Response();
-                $response->setContent($responseContent);
-                $response->headers->add(['Content-Type' => 'application/json']);
+                $response->setContent("OK");
 
                 return $response;
             }
