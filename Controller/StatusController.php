@@ -45,6 +45,15 @@ class StatusController extends Controller
         try {
             $body = file_get_contents('php://input');
             $data = stripslashes(trim($body));
+            $data_array = \OpenPayU_Util::convertJsonToArray($data, true);
+
+            $run = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('payu_bundle.payment_class'))->findBy(['order_id' => $data_array['order']['extOrderId']])
+                            ->getOrder()->getRunUser()->getRun();
+
+            \OpenPayU_Configuration::setEnvironment($run->getEnv());
+            \OpenPayU_Configuration::setMerchantPosId($run->getPosId());
+            \OpenPayU_Configuration::setSignatureKey($run->getSignatureKey());
+
             /** @var \stdClass $result */
             $result = \OpenPayU_Order::consumeNotification($data)->getResponse();
 
