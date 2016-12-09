@@ -47,12 +47,12 @@ class StatusController extends Controller
             $data = stripslashes(trim($body));
             $data_array = \OpenPayU_Util::convertJsonToArray($data, true);
 
-            $run = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('payu_bundle.payment_class'))->findBy(['order_id' => $data_array['order']['extOrderId']])
-                            ->getOrder()->getRunUser()->getRun();
+            $payment = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('payu_bundle.payment_class'))->findBy(['orderId' => $data_array['order']['extOrderId']])[0]
+            $run = $payment->getOrder()->getRunUser()->getRun();
 
-            \OpenPayU_Configuration::setEnvironment($run->getEnv());
-            \OpenPayU_Configuration::setMerchantPosId($run->getPosId());
-            \OpenPayU_Configuration::setSignatureKey($run->getSignatureKey());
+            \OpenPayU_Configuration::setEnvironment($run->getPaymentEnv());
+            \OpenPayU_Configuration::setMerchantPosId($run->getPaymentId());
+            \OpenPayU_Configuration::setSignatureKey($run->getPaymentSignature());
 
             /** @var \stdClass $result */
             $result = \OpenPayU_Order::consumeNotification($data)->getResponse();
@@ -60,7 +60,7 @@ class StatusController extends Controller
             if ($result->order->orderId) {
                 $order = \OpenPayU_Order::retrieve($result->order->orderId);
                 /** @var Payment $payment */
-                $payment = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('payu_bundle.payment_class'))->find($result->order->orderId);
+                //$payment = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('payu_bundle.payment_class'))->find($result->order->orderId);
 
                 if ($payment) {
                     if (
