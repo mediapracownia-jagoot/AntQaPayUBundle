@@ -47,7 +47,7 @@ class StatusController extends Controller
             $data = stripslashes(trim($body));
             $data_array = \OpenPayU_Util::convertJsonToArray($data, true);
 
-            $payment = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('payu_bundle.payment_class'))->findBy(['order' => $data_array['order']['extOrderId']])[0];
+            $payment = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('payu_bundle.payment_class'))->findOneByOrder[$data_array['order']['extOrderId']);
             $run = $payment->getOrder()->getRunUser()->getRun();
 
             \OpenPayU_Configuration::setEnvironment($run->getPaymentEnv());
