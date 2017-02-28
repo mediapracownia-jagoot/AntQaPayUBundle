@@ -2,6 +2,7 @@
 
 namespace AntQa\Bundle\PayUBundle\Controller;
 
+use PaymentBundle\Object\Type;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,7 +49,12 @@ class StatusController extends Controller
             $data_array = \OpenPayU_Util::convertJsonToArray($data, true);
 
             $payment = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('payu_bundle.payment_class'))->findOneByOrder($data_array['order']['extOrderId']);
-            $run = $payment->getOrder()->getRunUser()->getRun();
+            if ($payment->getOrder()->getType() == Type::TYPE_JOIN) {
+                $run = $payment->getOrder()->getRunUser()->getRun();
+            }
+            if ($payment->getOrder()->getType() == Type::TYPE_GIFT) {
+                $run = $payment->getOrder()->getGift()->getRun();
+            }
 
             \OpenPayU_Configuration::setEnvironment($run->getPaymentEnv());
             \OpenPayU_Configuration::setMerchantPosId($run->getPaymentId());
