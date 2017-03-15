@@ -34,16 +34,17 @@ class PaymentController
 
     /**
      * @param EntityManager $em
+     * @param string        $env
+     * @param int           $posId
+     * @param string        $signatureKey
+     * @param string        $secret
      * @param string        $class
      */
-    public function __construct(EntityManager $em, $class)
+    public function __construct(EntityManager $em, $env, $posId, $signatureKey, $secret, $class)
     {
         $this->em = $em;
         $this->class = $class;
-    }
 
-    private function __configurePayU($env, $posId, $signatureKey, $secret)
-    {
         \OpenPayU_Configuration::setEnvironment($env);
         \OpenPayU_Configuration::setMerchantPosId($posId);
         \OpenPayU_Configuration::setSignatureKey($signatureKey);
@@ -58,10 +59,8 @@ class PaymentController
      *
      * @return RedirectResponse
      */
-    public function createOrder(array $orderDetails = [], array $options = [], $payu_config = [])
+    public function createOrder(array $orderDetails = [], array $options = [])
     {
-        $this->__configurePayU($payu_config['env'], $payu_config['posId'], $payu_config['signatureKey'], $payu_config['secret']);
-
         $resolver = new OptionsResolver();
         $this->configureOrder($resolver);
         $this->orderDetails = $resolver->resolve($orderDetails);

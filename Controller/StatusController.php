@@ -18,6 +18,13 @@ use AntQa\Bundle\PayUBundle\Model\Payment;
  */
 class StatusController extends Controller
 {
+    public function __construct($env, $posId, $signatureKey)
+    {
+        \OpenPayU_Configuration::setEnvironment($env);
+        \OpenPayU_Configuration::setMerchantPosId($posId);
+        \OpenPayU_Configuration::setSignatureKey($signatureKey);
+    }
+
     /**
      * @param Request $request
      *
@@ -47,12 +54,9 @@ class StatusController extends Controller
             $data = stripslashes(trim($body));
             $data_array = \OpenPayU_Util::convertJsonToArray($data, true);
 
-            $payment = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('payu_bundle.payment_class'))->findOneByOrder($data_array['order']['extOrderId']);
-            $run = $payment->getOrder()->getRunUser()->getRun();
+            $order_id = explode('-', $data_array['order']['extOrderId']);
 
-            \OpenPayU_Configuration::setEnvironment($run->getPaymentEnv());
-            \OpenPayU_Configuration::setMerchantPosId($run->getPaymentId());
-            \OpenPayU_Configuration::setSignatureKey($run->getPaymentSignature());
+            $payment = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('payu_bundle.payment_class'))->findOneByOrder($order_id[1]);
 
             /** @var \stdClass $result */
             $result = \OpenPayU_Order::consumeNotification($data)->getResponse();
