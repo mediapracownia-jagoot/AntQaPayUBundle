@@ -48,7 +48,7 @@ class StatusController extends Controller
 
             $order_id = explode('-', $data_array['order']['extOrderId']);
 
-            $payment = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('payu_bundle.payment_class'))->findOneByOrder($order_id);
+            $payment = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('payu_bundle.payment_class'))->findOneByOrder($order_id[1]);
 
             /** @var \stdClass $result */
             $result = \OpenPayU_Order::consumeNotification($data)->getResponse();
