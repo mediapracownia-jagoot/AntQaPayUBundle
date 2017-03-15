@@ -128,7 +128,8 @@ class PaymentController
                 'totalAmount' => 'integer',
                 'extOrderId' => 'integer',
                 'products' => 'array',
-                'buyer' => 'array'
+                'buyer' => 'array',
+                'validityTime' => 'integer',
             ]);
     }
 }
