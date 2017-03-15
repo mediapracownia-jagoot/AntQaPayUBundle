@@ -127,7 +127,7 @@ class PaymentController
                 'description' => 'string',
                 'currencyCode' => 'string',
                 'totalAmount' => 'integer',
-                'extOrderId' => 'integer',
+                'extOrderId' => 'string',
                 'products' => 'array',
                 'buyer' => 'array',
                 'validityTime' => 'integer',
