@@ -18,13 +18,6 @@ use AntQa\Bundle\PayUBundle\Model\Payment;
  */
 class StatusController extends Controller
 {
-    public function __construct()
-    {
-        \OpenPayU_Configuration::setEnvironment($this->getParameter('payu_bundle.pos_env'));
-        \OpenPayU_Configuration::setMerchantPosId($this->getParameter('payu_bundle.pos_id'));
-        \OpenPayU_Configuration::setSignatureKey($this->getParameter('payu_bundle.pos_signature_key'));
-    }
-
     /**
      * @param Request $request
      *
@@ -45,7 +38,6 @@ class StatusController extends Controller
      */
     public function notifyAction()
     {
-        $paymentController = $this->get('ant_qa.payu_bundle.controller.payment');
         /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
         $dispatcher = $this->container->get('event_dispatcher');
 
@@ -56,7 +48,7 @@ class StatusController extends Controller
 
             $order_id = explode('-', $data_array['order']['extOrderId']);
 
-            $payment = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('payu_bundle.payment_class'))->findOneByOrder($order_id[1]);
+            $payment = $this->getDoctrine()->getManager()->getRepository($this->container->getParameter('payu_bundle.payment_class'))->findOneByOrder($order_id);
 
             /** @var \stdClass $result */
             $result = \OpenPayU_Order::consumeNotification($data)->getResponse();
