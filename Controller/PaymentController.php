@@ -112,7 +112,8 @@ class PaymentController
                 'totalAmount',
                 'extOrderId',
                 'products',
-                'buyer'
+                'buyer',
+                'validityTime'
             ])
             ->setDefaults([
                 'currencyCode' => 'PLN',
