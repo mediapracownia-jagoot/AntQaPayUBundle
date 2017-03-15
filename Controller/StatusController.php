@@ -18,11 +18,11 @@ use AntQa\Bundle\PayUBundle\Model\Payment;
  */
 class StatusController extends Controller
 {
-    public function __construct($env, $posId, $signatureKey)
+    public function __construct()
     {
-        \OpenPayU_Configuration::setEnvironment($env);
-        \OpenPayU_Configuration::setMerchantPosId($posId);
-        \OpenPayU_Configuration::setSignatureKey($signatureKey);
+        \OpenPayU_Configuration::setEnvironment($this->getParameter('payu_bundle.pos_env'));
+        \OpenPayU_Configuration::setMerchantPosId($this->getParameter('payu_bundle.pos_id'));
+        \OpenPayU_Configuration::setSignatureKey($this->getParameter('payu_bundle.pos_signature_key'));
     }
 
     /**
