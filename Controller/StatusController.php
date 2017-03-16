@@ -42,6 +42,10 @@ class StatusController extends Controller
         $dispatcher = $this->container->get('event_dispatcher');
 
         try {
+            \OpenPayU_Configuration::setEnvironment($this->container->getParameter("payu_bundle.pos_env"));
+            \OpenPayU_Configuration::setMerchantPosId($this->container->getParameter("payu_bundle.pos_id"));
+            \OpenPayU_Configuration::setSignatureKey($this->container->getParameter("payu_bundle.pos_signature_key"));
+
             $body = file_get_contents('php://input');
             $data = stripslashes(trim($body));
             $data_array = \OpenPayU_Util::convertJsonToArray($data, true);
