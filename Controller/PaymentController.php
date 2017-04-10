@@ -70,7 +70,7 @@ class PaymentController
         /** @var Payment $payment */
         $payment = new $this->class;
         $payment
-            ->setId($response->getResponse()->orderId)
+            ->setPayUId($response->getResponse()->orderId)
             ->setOrderId($response->getResponse()->extOrderId);
 
         if (!empty($options)) {
@@ -85,6 +85,15 @@ class PaymentController
         $this->em->flush();
 
         return $this->redirectToUrl($response->getResponse()->redirectUri);
+    }
+
+    public function cancelPayment($payUOrderId, $payuConfig = [])
+    {
+        $this->__configurePayU($payuConfig['env'], $payuConfig['posId'], $payuConfig['signatureKey'], $payuConfig['secret']);
+        $response1 = \OpenPayU_Order::cancel($payUOrderId);
+        $response2 = \OpenPayU_Order::cancel($payUOrderId);
+
+        return compact('response1', 'response2');
     }
 
     /**
