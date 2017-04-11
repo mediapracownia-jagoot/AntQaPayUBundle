@@ -86,6 +86,13 @@ class PaymentController
         return $this->redirectToUrl($response->getResponse()->redirectUri);
     }
 
+    public function cancelPayment($payUOrderId)
+    {
+        $response1 = \OpenPayU_Order::cancel($payUOrderId);
+        $response2 = \OpenPayU_Order::cancel($payUOrderId);
+        return compact('response1', 'response2');
+    }
+
     /**
      * @param string $url
      *
