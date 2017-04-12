@@ -69,7 +69,7 @@ class PaymentController
         /** @var Payment $payment */
         $payment = new $this->class;
         $payment
-            ->setId($response->getResponse()->orderId)
+            ->setPayuId($response->getResponse()->orderId)
             ->setOrderId($response->getResponse()->extOrderId);
 
         if (!empty($options)) {
